@@ -1,0 +1,18 @@
+name: 'morocco_weather'
+version: '1.0.0'
+config-version: 2
+
+profile: 'morocco_weather'
+
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  morocco_weather:
+    staging:
+      +schema: STAGING
+      +materialized: view
+    mart:
+      +schema: MART
+      +materialized: table
