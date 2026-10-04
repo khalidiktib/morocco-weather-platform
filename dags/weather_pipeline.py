@@ -131,7 +131,7 @@ def train_and_forecast():
     cur.execute("USE WAREHOUSE MOROCCO_WH")
     cur.execute("""
         SELECT city, weather_date, avg_temp
-        FROM MOROCCO_WEATHER.STAGING_MART.MART_WEATHER_DAILY
+        FROM MOROCCO_WEATHER.MART.MART_WEATHER_DAILY
         ORDER BY city, weather_date
     """)
     rows = cur.fetchall()
@@ -148,7 +148,6 @@ def train_and_forecast():
             trained_at     TIMESTAMP_NTZ
         )
     """)
-    cur.execute("DELETE FROM MOROCCO_WEATHER.MART.WEATHER_FORECASTS")
 
     all_forecasts = []
     for city in df["city"].unique():
@@ -178,6 +177,8 @@ def train_and_forecast():
             ))
         print(f"Forecasted 7 days for {city}")
 
+    cur.execute("BEGIN")
+    cur.execute("DELETE FROM MOROCCO_WEATHER.MART.WEATHER_FORECASTS")
     cur.executemany("""
         INSERT INTO MOROCCO_WEATHER.MART.WEATHER_FORECASTS
         VALUES (%s, %s, %s, %s, %s, %s)

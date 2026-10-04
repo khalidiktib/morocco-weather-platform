@@ -28,6 +28,7 @@ staged AS (
         END                                          AS weather_description,
         ingested_at
     FROM source
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY city, timestamp ORDER BY ingested_at DESC) = 1
 )
 
 SELECT * FROM staged

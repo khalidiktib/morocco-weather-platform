@@ -1,7 +1,7 @@
 # 🇲🇦 Morocco Weather Intelligence Platform
 ### End-to-End Automated Data & ML Pipeline
 
-An automated production-grade pipeline that ingests real-time weather data for Moroccan cities, transforms it through a multi-layer Snowflake data warehouse, and generates daily temperature forecasts using a Prophet time-series model — all orchestrated with Apache Airflow running inside Docker.
+An automated production-style pipeline that ingests real-time weather data for Moroccan cities, transforms it through a multi-layer Snowflake data warehouse, and generates daily temperature forecasts using a Prophet time-series model — all orchestrated with Apache Airflow running inside Docker.
 
 ---
 
@@ -90,7 +90,7 @@ A single master DAG `weather_pipeline` runs daily and chains all steps in sequen
 fetch_and_load_weather → dbt_transform → train_and_forecast
 ```
 
-If any step fails, downstream steps are automatically skipped.
+If any step fails, downstream tasks are marked upstream_failed and do not run.
 
 ---
 
@@ -99,8 +99,6 @@ If any step fails, downstream steps are automatically skipped.
 ```
 morocco-weather-platform/
 ├── dags/
-│   ├── weather_ingestion.py      # Ingestion DAG
-│   ├── weather_forecast.py       # Forecast DAG
 │   └── weather_pipeline.py       # Master pipeline DAG
 ├── dbt/
 │   ├── dbt_project.yml
